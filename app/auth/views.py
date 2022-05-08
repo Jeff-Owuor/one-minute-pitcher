@@ -5,6 +5,12 @@ from ..models import User
 from .forms import RegistrationForm,LoginForm
 from .. import db
 
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("main.index"))
+
 @auth.route('/login',methods=['GET','POST'])
 def login():
     login_form = LoginForm()
