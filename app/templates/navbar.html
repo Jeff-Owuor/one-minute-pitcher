@@ -10,14 +10,14 @@
             <a class="navbar-brand text-dark" href="/"></a>
         </div>
         <div class="navbar-collapse collapse">
-            <!-- <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav">
                 <li><a href="/" style="color:#f69d3c">Home</a></li>
                 {% if current_user.is_authenticated %}
                   <li style="color:white;padding:15px;">{{current_user.username}}</li>
                   <li><a href="{{url_for('auth.logout')}}">Sign out</a></li>
                   {% else %}
                   <li><a href="{{url_for('auth.login')}}">Sign in</a></li>
-                  {%endif%} -->
+                  {%endif%}
         </div>
 
     </div>
