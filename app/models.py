@@ -44,8 +44,17 @@ class Pitch(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     posted = db.Column(db.DateTime,default=datetime.utcnow)
     category = db.Column(db.String(255))
-    the_pitch = db.Column(db.String())
-    user_id = db.Column(db.Integer,db.ForeignKey('users.id'))   
+    pitch = db.Column(db.Text())
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id')) 
+    
+    def save_pitch(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_pitches(cls,id):
+        pitches = Pitch.query.filter_by(user_id=id).all()
+        return pitches  
     
 class Role(db.Model):
     __tablename__ = 'roles'
