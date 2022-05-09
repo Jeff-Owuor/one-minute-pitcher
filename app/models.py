@@ -18,6 +18,7 @@ class User(UserMixin,db.Model):
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     pass_secure= db.Column(db.String(255))
+    pitch = db.relationship('Pitch',backref = 'user',lazy="dynamic")
     
     @property
     def password(self):
@@ -43,7 +44,8 @@ class Pitch(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     posted = db.Column(db.DateTime,default=datetime.utcnow)
     category = db.Column(db.String(255))
-    the_pitch = db.Column(db.String())   
+    the_pitch = db.Column(db.String())
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'))   
     
 class Role(db.Model):
     __tablename__ = 'roles'
