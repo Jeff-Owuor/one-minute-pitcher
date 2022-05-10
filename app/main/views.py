@@ -18,6 +18,7 @@ def index():
     
     return render_template("index.html",pitches = pitches, music = music, food = food, lifestyle = lifestyle)
 
+
 @main.route('/user/<uname>')
 def profile(uname):
     user = User.query.filter_by(username = uname).first()
@@ -68,7 +69,7 @@ def new_pitch():
     if form.validate_on_submit():
         pitch = form.pitch.data
         category = form.category.data
-        user_id = current_user
+        user_id = current_user._get_current_object().id
         new_pitch_dict = Pitch(pitch = pitch,user_id=user_id,category=category)
         new_pitch_dict.save_pitch()
         return redirect(url_for('main.index'))
