@@ -34,18 +34,6 @@ class User(UserMixin,db.Model):
     def verify_password(self,password):
         return check_password_hash(self.pass_secure,password)
     
-    def like_post(self, post):
-        if not self.has_liked_post(post):
-            like = Upvote(user_id=self.id, post_id=post.id)
-            db.session.add(like)
-
-    
-    def has_liked_post(self, post):
-        return Upvote.query.filter(
-            Upvote.user_id == self.id,
-            Upvote.pitch_id == post.id).count() > 0
-
-     
     def __repr__(self):
         return f'User {self.username}'
     

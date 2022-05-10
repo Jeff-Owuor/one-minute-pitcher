@@ -1,5 +1,5 @@
 from flask import render_template,request,redirect,url_for,abort
-from ..models import User,Pitch
+from ..models import User,Pitch,Upvote,Downvote
 from . import main
 from .forms import UpdateProfile,PitchForm
 from .. import db,photos
@@ -61,6 +61,14 @@ def update_pic(uname):
         user.profile_pic_path = path
         db.session.commit()
     return redirect(url_for('main.profile',uname=uname))
+
+@main.route('/upvote/<int:id>',methods = ['POST','GET'])
+@login_required
+def upvote(id):
+    new_vote = Upvote(user = current_user, pitch_id=id)
+    new_vote.save()
+    return redirect(url_for('main.index',id=id))
+
 
 @main.route('/pitch', methods = ['POST','GET'])
 @login_required
