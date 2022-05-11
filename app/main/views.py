@@ -1,7 +1,7 @@
 from flask import render_template,request,redirect,url_for,abort
-from ..models import User,Pitch,Upvote,Downvote
+from ..models import User,Pitch,Upvote,Downvote,Comment
 from . import main
-from .forms import UpdateProfile,PitchForm
+from .forms import UpdateProfile,PitchForm,CommentsForm
 from .. import db,photos
 from flask_login import login_required, current_user
 
@@ -18,6 +18,22 @@ def index():
     
     return render_template("index.html",pitches = pitches, music = music, food = food, lifestyle = lifestyle)
 
+@main.route('/pitch/new/<int:id>', methods=['GET','POST'])
+@login_required
+def new_comment(id):
+    pitch = Pitch.query.filter_by(id=id).first()
+    
+    if pitch is None:
+        abort(404)
+        
+    form = CommentsForm()
+    if form.validate_on_submit():
+        comments = form.comment_detail.data
+        new_comment = Comment( comment_info=comments, pitch=pitch )
+        new_comment.save_comment()
+        return redirect(url_for('.single_pitch', id=pitch.id ))
+    title = 'New Comment'
+    return render_template('comments.html', title=title, comment_form=form)
 
 @main.route('/user/<uname>')
 def profile(uname):

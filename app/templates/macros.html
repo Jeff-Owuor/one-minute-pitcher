@@ -2,6 +2,16 @@
 
     {% for pitch in pitches %}
         <p>{{ pitch.pitch}}</p>
+
+    {% endfor %}
+
+{% endmacro %}
+
+{% macro displayComments(comment) %}
+
+    {% for comment in comments %}
+        <p>{{ comment.comment }}</p>
+        
     {% endfor %}
 
 {% endmacro %}
