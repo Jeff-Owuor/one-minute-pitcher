@@ -1,5 +1,6 @@
 import unittest
-from app.models import User
+from app.models import User,Pitch
+from app import db
 
 class UserTest(unittest.TestCase):
     '''
@@ -10,7 +11,16 @@ class UserTest(unittest.TestCase):
         '''
         Set up method that will run before every Test
         '''
-        self.new_user = User(1234,'Jeff_Dev','xjeff37@gmail.com',2,'Live,laugh and love',"https://www.image.com","23432kja")
+        self.user_jeff = User(username = 'theDev',password='12345678',email = 'comeon@gmail.com')
+        
+    def tearDown(self):
+        '''
+         Method that runs after every test
+        '''
+        User.query.delete()
 
-    def test_instance(self):
-        self.assertTrue(isinstance(self.new_user,User))
+    def test_check_instance_variables(self):
+        self.assertEquals(self.new_pitch.category,'music')
+        self.assertEquals(self.new_pitch.pitch,'Music is food to the soul')
+        self.assertEquals(self.new_pitch.user,self.user_jeff)
+    

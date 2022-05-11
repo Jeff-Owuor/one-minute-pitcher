@@ -5,21 +5,22 @@
 {%block content%}
 <div class="container">
     <div class="row">
+      <div class="col-md-3">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header" style="text-align:center;font-family: 'Courier New', Courier, monospace; font-size: larger;">
                 All
             </div>
             <div class="card-body">
               <blockquote class="blockquote mb-0">
-                
                 <p>{{macro.displayPitches(pitches)}}</p>
-                <a href="/pitch/new/{{pitches.id}}">Comment</a>
                 <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
               </blockquote>
             </div>
           </div>
+        </div>
+        <div class="col-md-3">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header" style="text-align:center;font-family: 'Courier New', Courier, monospace; font-size: larger;">
                     Food
                 </div>
                 <div class="card-body">
@@ -29,8 +30,10 @@
                   </blockquote>
                 </div>
               </div>
+              </div>
+              <div class="col-md-3">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header" style="text-align:center;font-family: 'Courier New', Courier, monospace; font-size: larger;">
                         Lifestyle
                     </div>
                     <div class="card-body">
@@ -40,8 +43,10 @@
                       </blockquote>
                     </div>
                   </div>
+                  </div>
+                  <div class="col-md-3">
                   <div class="card">
-                    <div class="card-header">
+                    <div class="card-header" style="text-align:center; font-family: 'Courier New', Courier, monospace; font-size: larger;">
                         Music
                     </div>
                     <div class="card-body">
@@ -50,6 +55,7 @@
                         <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
                       </blockquote>
                     </div>
+                  </div>
                   </div>
         
         

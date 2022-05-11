@@ -15,7 +15,6 @@ def index():
     lifestyle = Pitch.query.filter_by(category = 'Lifestyle').all() 
     food = Pitch.query.filter_by(category = 'Food').all()
     music = Pitch.query.filter_by(category = 'Music').all()
-    
     return render_template("index.html",pitches = pitches, music = music, food = food, lifestyle = lifestyle)
 
 @main.route('/pitch/new/<int:id>', methods=['GET','POST'])
