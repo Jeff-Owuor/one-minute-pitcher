@@ -3,4 +3,7 @@ body{
     background-size: cover;
     background-repeat: no-repeat;
 }
+input{
+    background-color: transparent;
+}
     
