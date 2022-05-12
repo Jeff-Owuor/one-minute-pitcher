@@ -17,7 +17,7 @@ def index():
     music = Pitch.query.filter_by(category = 'Music').all()
     return render_template("index.html",pitches = pitches, music = music, food = food, lifestyle = lifestyle)
 
-@main.route('/pitch/new/<int:id>', methods=['GET','POST'])
+@main.route('/comments/<int:id>', methods=['GET','POST'])
 @login_required
 def new_comment(id):
     pitch = Pitch.query.filter_by(id=id).first()
@@ -30,9 +30,19 @@ def new_comment(id):
         comments = form.comment_detail.data
         new_comment = Comment( comment_info=comments, pitch=pitch )
         new_comment.save_comment()
-        return redirect(url_for('.single_pitch', id=pitch.id ))
+        return redirect(url_for('.a_pitch', id=pitch.id ))
     title = 'New Comment'
     return render_template('comments.html', title=title, comment_form=form)
+
+@main.route('/a_pitch/<int:id>')
+@login_required
+def a_pitch(id):
+    pitches = Pitch.query.get(id)
+    
+    if pitches is None:
+        abort(404)
+    comment = Comment.get_comments(id);
+    return render_template("a_pitch.html",comment = comment,pitches = pitches)
 
 @main.route('/user/<uname>')
 def profile(uname):

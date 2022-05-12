@@ -1,8 +1,11 @@
 {% macro displayPitches(pitches) %}
 
     {% for pitch in pitches %}
+       <div style="border-top:2px solid white;border-right:2px solid white;border-bottom:2px solid white; margin-bottom:7px;box-shadow: 15px 10px 10px black;">
+       <p style="color:white;">Posted by {{pitch.user.username}}</p>
         <p>{{ pitch.pitch}}</p>
-
+        <p>Posted On:{{pitch.posted.strftime('%Y/%m/%d %r')}}</p>
+    </div>
     {% endfor %}
 
 {% endmacro %}

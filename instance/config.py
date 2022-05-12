@@ -1,1 +1,1 @@
-SECRET_KEY = 'Whatitdobaby'
+SECRET_KEY='2030'
