@@ -18,7 +18,6 @@ class User(UserMixin,db.Model):
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     upvote = db.relationship('Upvote',backref='user',lazy='dynamic')
-    downvote = db.relationship('Downvote',backref='user',lazy='dynamic')
     pass_secure= db.Column(db.String(255))
     pitch = db.relationship('Pitch',backref = 'user',lazy="dynamic")
     
@@ -48,7 +47,6 @@ class Pitch(db.Model):
     category = db.Column(db.String(255))
     pitch = db.Column(db.String())
     upvote = db.relationship('Upvote',backref='pitch',lazy='dynamic')
-    downvote = db.relationship('Downvote',backref='pitch',lazy='dynamic')
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
     comment = db.relationship('Comment',backref = 'pitch',lazy="dynamic") 
     
@@ -100,24 +98,6 @@ class Upvote(db.Model):
         return f'{self.user_id}:{self.pitch_id}'
     
 
-class Downvote(db.Model):
-    __tablename__ = 'downvotes'
-
-    id = db.Column(db.Integer,primary_key=True)
-    user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
-    pitch_id = db.Column(db.Integer,db.ForeignKey('pitches.id'))
-    
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-    @classmethod
-    def get_downvotes(cls,downvote_id):
-        downvote = Downvote.query.filter_by(pitch_id=downvote_id).all()
-        return downvote
-
-    def __repr__(self):
-        return f'{self.user_id}:{self.pitch_id}'
 
   
 class Role(db.Model):
