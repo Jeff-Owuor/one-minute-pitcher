@@ -1,26 +1,37 @@
 import unittest
-from app.models import User,Pitch
-from app import db
+from app.models import User,db;
 
-class UserTest(unittest.TestCase):
-    '''
-    Test Class to test the behaviour of the User class
-    '''
-
+class UserModelTest(unittest.TestCase):
     def setUp(self):
-        '''
-        Set up method that will run before every Test
-        '''
-        self.user_jeff = User(username = 'theDev',password='12345678',email = 'comeon@gmail.com')
-        
+        self.new_user = User(username = "Jeff_dev", email ="xjeff37@gmail.com", bio = "I am a freak of nature", profile_pic_path = "image_url", password = 'Xavier41!')
+        db.session.add(self.new_user)
+        db.session.commit()
+
     def tearDown(self):
-        '''
-         Method that runs after every test
-        '''
         User.query.delete()
+        db.session.commit()
+ 
+    def test_password_setter(self):
+        self.assertTrue(self.new_user.pass_secure is not None)
+
+    def test_password_verification(self):
+        self.assertTrue(self.new_user.verify_password('oscar'))
+
+    def test_save_user(self):
+        self.new_user.save_user()
+        self.assertTrue(len(User.query.all())>0)
 
     def test_check_instance_variables(self):
-        self.assertEquals(self.new_pitch.category,'music')
-        self.assertEquals(self.new_pitch.pitch,'Music is food to the soul')
-        self.assertEquals(self.new_pitch.user,self.user_jeff)
-    
+        self.assertEquals(self.new_user.username, 'Jeff_dev')
+        self.assertEquals(self.new_user.email, 'xjeff37@gmail.com')
+        self.assertEquals(self.new_user.bio, 'I am a freak of nature')
+        self.assertEquals(self.new_user.profile_pic_path, 'image_url')
+        self.assertTrue(self.new_user.verify_password('Xavier41!'))
+
+
+    def test_no_access_password(self):
+        with self.assertRaises(AttributeError):
+            self.new_user.password 
+            
+if __name__ == '__main':
+    unittest.main()            

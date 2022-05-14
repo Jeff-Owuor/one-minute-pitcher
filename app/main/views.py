@@ -1,5 +1,5 @@
 from flask import render_template,request,redirect,url_for,abort
-from ..models import User,Pitch,Upvote,Comment
+from ..models import User,Pitch,Votes,Comment
 from . import main
 from .forms import UpdateProfile,PitchForm,CommentsForm
 from .. import db,photos
@@ -21,28 +21,30 @@ def index():
 @login_required
 def new_comment(id):
     pitch = Pitch.query.filter_by(id=id).first()
-    
+    form = CommentsForm()
     if pitch is None:
         abort(404)
         
-    form = CommentsForm()
+    
     if form.validate_on_submit():
         comments = form.comment_detail.data
-        new_comment = Comment( comment_info=comments, pitch=pitch )
+        new_comment = Comment( comment=comments, user_id = current_user.id, pitch_id = pitch.id )
         new_comment.save_comment()
         return redirect(url_for('.a_pitch', id=pitch.id ))
-    title = 'New Comment'
-    return render_template('comments.html', title=title, comment_form=form)
+    return render_template('comments.html',form=form)
 
-@main.route('/a_pitch/<int:id>')
+@main.route('/a_pitch/<int:id>', methods=['GET', 'POST'])
 @login_required
 def a_pitch(id):
     pitches = Pitch.query.get(id)
     
     if pitches is None:
         abort(404)
-    comment = Comment.get_comments(id);
-    return render_template("a_pitch.html",comment = comment,pitches = pitches)
+    
+    comment = Comment.get_comments(id)
+    count_likes = Votes.query.filter_by(pitches_id=id, vote=1).all()
+    count_dislikes = Votes.query.filter_by(pitches_id=id, vote=2).all()
+    return render_template('a_pitch.html', pitches = pitches, comment = comment, count_likes=len(count_likes), count_dislikes=len(count_dislikes))
 
 @main.route('/user/<uname>')
 def profile(uname):
@@ -87,12 +89,6 @@ def update_pic(uname):
         db.session.commit()
     return redirect(url_for('main.profile',uname=uname))
 
-@main.route('/upvote/<int:id>',methods = ['POST','GET'])
-@login_required
-def upvote(id):
-    new_vote = Upvote(user = current_user, pitch_id=id)
-    new_vote.save()
-    return redirect(url_for('main.index',id=id))
 
 
 @main.route('/pitch', methods = ['POST','GET'])
@@ -108,3 +104,28 @@ def new_pitch():
         return redirect(url_for('main.index'))
         
     return render_template('pitch.html', form = form)
+
+@main.route('/pitch/upvote/<int:id>&<int:vote_type>')
+@login_required
+def upvote(id,vote_type):
+    votes = Votes.query.filter_by(user_id=current_user.id).all()
+    print(f'The new vote is {votes}')
+    to_str=f'{vote_type}:{current_user.id}:{id}'
+    print(f'The current vote is {to_str}')
+
+    if not votes:
+        new_vote = Votes(vote=vote_type, user_id=current_user.id, pitches_id=id)
+        new_vote.save_vote()
+        print('YOU HAVE new VOTED')
+
+    for vote in votes:
+        if f'{vote}' == to_str:
+            print('YOU CANNOT VOTE MORE THAN ONCE')
+            break
+        else:   
+            new_vote = Votes(vote=vote_type, user_id=current_user.id, pitches_id=id)
+            new_vote.save_vote()
+            print('YOU HAVE VOTED')
+            break
+    return redirect(url_for('.a_pitch', id=id))   
+    

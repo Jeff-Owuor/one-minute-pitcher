@@ -1,10 +1,10 @@
 from re import U
 from app import create_app,db
-from app.models import User,Role,Pitch,Upvote,Comment
+from app.models import User,Role,Pitch,Votes,Comment
 from flask_script import Manager,Server
 from  flask_migrate import Migrate, MigrateCommand
 
-app = create_app('development')
+
 app = create_app('production')
 
 manager = Manager(app)
@@ -22,7 +22,7 @@ def test():
 
 @manager.shell
 def make_shell_context():
-    return dict(app = app,db = db,User = User, Role = Role,Pitch = Pitch, Upvote = Upvote,Comment = Comment )
+    return dict(app = app,db = db,User = User, Role = Role,Pitch = Pitch,Votes =Votes,Comment = Comment )
 
 if __name__ == '__main__':
     manager.run()

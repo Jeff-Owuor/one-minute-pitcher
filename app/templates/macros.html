@@ -5,6 +5,9 @@
        <p style="color:white;">Posted by {{pitch.user.username}}</p>
         <p>{{ pitch.pitch}}</p>
         <p>Posted On:{{pitch.posted.strftime('%Y/%m/%d %r')}}</p>
+        <a href=" {{url_for('.new_comment',id=pitch.id)}}">
+            <h4>COMMENT</h4>
+        </a>
     </div>
     {% endfor %}
 
@@ -19,3 +22,11 @@
 
 {% endmacro %}
 
+{% macro displaySpecificPitch(specific_pitch_list) %} 
+{% for comment in specific_pitch_list %}
+<div style="display:flex;justify-content:space-between;color:red;border-top:2px solid black;border-right:2px solid black;border-left:2px solid black; margin:8px;">
+    <p style="margin:5px; font-size:20px;font-family:Arial, Helvetica, sans-serif;">{{comment.comment}} </p>
+    <p style="margin:5px;font-size:20px;">{{comment.time_posted.strftime('%Y/%m/%d || %r') }}</p>
+</div>
+{% endfor %} 
+{% endmacro %}   
