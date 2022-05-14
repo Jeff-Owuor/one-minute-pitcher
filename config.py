@@ -18,7 +18,7 @@ class ProdConfig(Config):
     Args:
         Config: The parent configuration class with General configuration settings
     '''
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL").replace("://", "ql://", 1)
+    SQLALCHEMY_DATABASE_URI = create_engine(os.environ.get("DATABASE_URL").replace("://", "ql://", 1), pool_pre_ping=True)
     DEBUG = True
     
 class DevConfig(Config):
